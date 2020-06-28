@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {View, Text, StyleSheet, Platform, TextInput} from 'react-native';
-import {Surface} from 'react-native-paper';
+import {View, Text, StyleSheet, Platform, TextInput, ScrollView} from 'react-native';
+import {Surface, Button} from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function HomeScreen() {
@@ -25,43 +25,114 @@ function HomeScreen() {
           <Text>Female</Text>
         </Surface>
       </View>
+      <ScrollView>
       <View style={styles.inputs}>
-      <TextInput
-        // Adding hint in Text Input using Place holder.
-        placeholder="Enter Text in TextInput"
-        // Making the Under line Transparent.
-        underlineColorAndroid="transparent"
-        // Calling the custom TextInputStyleClass.
-        style={styles.TextInputStyleClass}
-      />
-       <TextInput
-        // Adding hint in Text Input using Place holder.
-        placeholder="Enter Text in TextInput"
-        // Making the Under line Transparent.
-        underlineColorAndroid="transparent"
-        // Calling the custom TextInputStyleClass.
-        style={styles.TextInputStyleClass}
-      />
+        <View style={styles.dimensions}>
+          <Text style={styles.cm}>cm</Text>
+          <Text style={styles.ft}>ft</Text>
+        </View>
+        <TextInput
+          placeholder="0"
+          underlineColorAndroid="transparent"
+          style={styles.TextInputStyleClass}
+        />
+
+        
       </View>
-     
+
+      <View style={styles.inputs}>
+        <View style={styles.dimensions}>
+          <Text style={styles.kg}>kg</Text>
+          <Text style={styles.lb}>lb</Text>
+        </View>
+        <TextInput
+          placeholder="0"
+          underlineColorAndroid="transparent"
+          style={styles.TextInputStyleClass}
+        />
+
+        
+      </View>
+
+      <View style={styles.inputs}>
+        <View style={styles.dimensions}>
+          <Text style={styles.age}>Age</Text>
+        </View>
+        <TextInput
+          placeholder="0"
+          underlineColorAndroid="transparent"
+          keyboardType="numeric"
+          style={styles.ageInputStyle}
+        />
+
+        
+      </View>
+
+      <View style={{display:"flex", margin:60}}>
+      <Button icon="camera" style={{backgroundColor:"black"}} mode="contained" onPress={() => console.log('Pressed')}>
+        Calculate BMI
+      </Button>
+      </View>
+      </ScrollView>
+
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  inputs:{
-    marginTop:20,
-    display:"flex",
-    justifyContent:"center",
-    flexDirection:"row"
-  },  
+  age: {
+    margin: 10,
+    fontSize: 20,
+  },
+  cm: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    margin: 10,
+    fontSize: 20,
+  },
+  ft: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    margin: 10,
+    fontSize: 20,
+  },
+  kg: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    margin: 10,
+    fontSize: 20,
+  },
+  lb: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    margin: 10,
+    fontSize: 20,
+  },
+  dimensions: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  inputs: {
+    marginTop: 30,
+    display: 'flex',
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+  },
   TextInputStyleClass: {
     textAlign: 'center',
     height: 50,
-    borderWidth: 2,
-    borderColor: '#FF5722',
+    width: 150,
     borderRadius: 20,
     backgroundColor: '#FFFFFF',
+  },
+  ageInputStyle: {
+    textAlign: 'center',
+    height: 50,
+    width: 150,
+    borderRadius: 20,
+    backgroundColor: '#FFFFFF',
+    marginStart:30
   },
   mainText: {
     fontSize: 30,
