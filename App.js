@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from './src/screens/SplashScreen';
 import HomeScreen from './src/screens/HomeScreen';
+import DetailsScreen from './src/screens/DetailsScreen';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,9 @@ function App() {
         <Stack.Screen name="Home" options={{
             headerShown: false,
           }} component={HomeScreen} />
+          <Stack.Screen name="Details" options={{
+            headerShown: false,
+          }} component={DetailsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
     </SafeAreaProvider>
