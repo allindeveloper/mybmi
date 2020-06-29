@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {View, Text, StyleSheet, Platform, TextInput, ScrollView} from 'react-native';
-import {Surface, Button} from 'react-native-paper';
+import {View, Text, StyleSheet, Platform, ScrollView} from 'react-native';
+import {Surface, Button, TextInput} from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { appHelpers } from '../appHelpers';
@@ -8,16 +8,15 @@ const HomeScreen =(props) => {
 
   const [cmColor, setcmColor] = React.useState("white");
   const [ftColor, setftColor] = React.useState("black");
+  const [kgColor, setkgColor] = React.useState("white");
+  const [lbColor, setlbColor] = React.useState("black");
   const [feetCentimeterValue, setFeetCentimeterValue] = React.useState(null);
-  const [kglbValue, setkglbValue] = React.useState(0);
+  const [kglbValue, setkglbValue] = React.useState(null);
   const [ageValue, setAgeValue] = React.useState(0);
 
   React.useEffect(()=>{
     // console.log("center to feet", appHelpers.centimetertoFeet(182))
-
     console.log("feet to centimeter", feetCentimeterValue)
-
-    
   },[])
 
   const toggleCm = () =>{
@@ -35,8 +34,9 @@ const HomeScreen =(props) => {
       const centimeter = appHelpers.feettoCentimeter(feetCentimeterValue);
       setFeetCentimeterValue(centimeter.toString());
     }
-    
   }
+
+
   const toggleFt = () =>{
     if(ftColor === "black"){
       setftColor("white");
@@ -55,9 +55,49 @@ const HomeScreen =(props) => {
     
   }
 
+
+  const toggleKg = () =>{
+    if(kgColor === "white"){
+      setkgColor("black");
+      setlbColor("white")
+      // convert value from kilogram to pounds (lb)
+      const kg = appHelpers.kilogramstoPounds(kglbValue);
+      setkglbValue(kg.toString());
+      console.log("center to kgg", kg)
+    }else{
+      setkgColor("white");
+      setlbColor("black");
+      // convert value from pounds back to kilograms
+      const pounds = appHelpers.poundstoKilograms(kglbValue);
+      console.log("value here", pounds)
+      setkglbValue(pounds.toString());
+    }
+  }
+
+  const toggleLb = () =>{
+    if(lbColor === "black"){
+      setlbColor("white");
+      setkgColor("black");
+      // convert value from Pounds to Kilograms
+      const kg = appHelpers.kilogramstoPounds(kglbValue);
+      console.log("value here---", kg)
+      setkglbValue(kg.toString());
+    }else{
+      setkgColor("white");
+      setlbColor("black");
+      // convert value from pounds back to kilograms
+      const pounds = appHelpers.poundstoKilograms(kglbValue);
+      console.log("value haa", pounds)
+      setkglbValue(pounds.toString());
+    }
+  }
+
   const handleFeetCentimeterChange = (text) =>{
      setFeetCentimeterValue(text)
   }
+  const handleKilogramPoundsChange = (text) =>{
+    setkglbValue(text)
+ }
 
   const calculateBmi = () =>{
     console.log("feet to centi", feetCentimeterValue)
@@ -106,8 +146,8 @@ const HomeScreen =(props) => {
 
       <View style={styles.inputs}>
         <View style={styles.dimensions}>
-          <Text style={styles.kg}>kg</Text>
-          <Text style={styles.lb}>lb</Text>
+          <Text onPress={toggleKg} style={{justifyContent: 'flex-start',alignItems: 'center',margin: 10,fontSize: 20,color:kgColor}}>kg</Text>
+          <Text onPress={toggleLb} style={{justifyContent: 'flex-start',alignItems: 'center',margin: 10,fontSize: 20,color:lbColor}}>lb</Text>
         </View>
         <TextInput
           placeholder="0"
@@ -115,6 +155,7 @@ const HomeScreen =(props) => {
           keyboardType="numeric"
           style={styles.kgInputStyle}
           value={kglbValue}
+          onChangeText={handleKilogramPoundsChange}
         />
 
         
@@ -127,7 +168,7 @@ const HomeScreen =(props) => {
         <TextInput
           placeholder="0"
           underlineColorAndroid="transparent"
-          // keyboardType="numeric"
+          keyboardType="numeric"
           style={styles.ageInputStyle}
           value={ageValue}
         />
@@ -199,10 +240,16 @@ const styles = StyleSheet.create({
   },
   ageInputStyle: {
     textAlign: 'center',
+    overflow:'hidden',
     color:"black",
     height: 50,
     width: 150,
-    borderRadius: 20,
+    borderRadius: 50,
+    borderTopStartRadius:50,
+    borderTopEndRadius:50,
+
+    borderBottomEndRadius:50,
+    borderBottomStartRadius:50,
     backgroundColor: '#FFFFFF',
     marginStart:30,
     fontSize:20
