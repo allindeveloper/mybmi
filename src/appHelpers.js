@@ -36,6 +36,29 @@ export const appHelpers = {
     if (Math.floor(value) !== value)
         return value.toString().split(".")[1].length || 0;
     return 0;
+},
+
+validateBmiCalculation : (context) =>{
+  let resObj = {isValid:true, message:""};
+
+  if(context.state.gender === ""){
+    resObj.isValid = false,
+    resObj.message  = "Gender is Required";
+  }
+  else if(context.state.feetCentimeterValue === null){
+    resObj.isValid = false,
+    resObj.message  = "Feet or Centimeter is Required";
+  }
+  else if(context.state.kglbValue === null){
+    resObj.isValid = false,
+    resObj.message  = "Kilogram or Pounds is Required";
+  }
+  else if(context.state.ageValue === null){
+    resObj.isValid = false,
+    resObj.message  = "Age is Required";
+  }
+
+  return resObj;
 }
 
 }
