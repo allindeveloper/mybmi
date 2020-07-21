@@ -66,6 +66,7 @@ class DetailsScreen extends React.Component {
       bmiValue: 30,
       CurrentWeight: '00.0',
       CurrentBmi: 0,
+      reportValue: '-'
     };
   }
 
@@ -106,6 +107,7 @@ class DetailsScreen extends React.Component {
             } else {
               this.setState({bmiColor: 'orange'});
             }
+            appHelpers.updateReportValue(bmiValue,this);
           },
         );
       })
@@ -167,7 +169,7 @@ class DetailsScreen extends React.Component {
   };
 
   render() {
-    const {bmiData, bmiColor, bmiValue, CurrentWeight, CurrentBmi} = this.state;
+    const {bmiData, bmiColor, bmiValue, CurrentWeight, CurrentBmi, reportValue} = this.state;
     console.log('bmiData', typeof bmiData);
     console.log('currentbmit state', this.state.CurrentBmi);
     return (
@@ -226,7 +228,7 @@ class DetailsScreen extends React.Component {
                   />
                 </View>
                 <View style={styles.reportText}>
-                  <Text>Over Weight</Text>
+                  <Text>{reportValue}</Text>
                 </View>
               </View>
             </View>
