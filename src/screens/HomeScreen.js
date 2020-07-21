@@ -319,6 +319,7 @@ class HomeScreen extends React.Component {
     this.setState({ageValue:newValue.toString()})
   };
   minusHandler = () => {
+    const {ageValue} = this.state;
     const newValue = parseInt(ageValue) - 1;
     if (newValue < 0) {
       // setAgeValue('0');

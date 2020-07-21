@@ -63,62 +63,70 @@ class DetailsScreen extends React.Component {
     this.state = {
       bmiColor: null,
       bmiData: null,
-      bmiValue:30,
-      CurrentWeight:"00.0",
-      CurrentBmi: 0
+      bmiValue: 30,
+      CurrentWeight: '00.0',
+      CurrentBmi: 0,
     };
   }
 
-   componentDidMount() {
-    console.log("hehhhhh")
-     AsyncStorage.getItem('@CurrentWeight',(error,result)=>{
-      this.setState({CurrentWeight: result})
-     });
-     AsyncStorage.getItem('@CurrentBmi',(error,result)=>{
-      this.setState({CurrentBmi: parseInt(result)})
-     });
-    
+  componentDidMount() {
+    console.log('hehhhhh');
+    AsyncStorage.getItem('@CurrentWeight', (error, result) => {
+      this.setState({CurrentWeight: result});
+    });
+    AsyncStorage.getItem('@CurrentBmi', (error, result) => {
+      this.setState({CurrentBmi: parseInt(result)});
+    });
+
     let bmiData = [];
-    db.listProduct().then((data) => {
-      bmiData = data;
-      this.setState({
-        bmiData,
-        isLoading: false,
-      },()=>{
-        const bmiValue =  parseInt(this.state.CurrentBmi);
-        if (bmiValue < 15) {
-          this.setState({bmiColor:'orange'})
-        } else if (bmiValue >= 15 && bmiValue < 16) {
-          this.setState({bmiColor:'orange'})
-        } else if (bmiValue > 16 && bmiValue < 18.5) {
-          this.setState({bmiColor:'orange'})
-        } else if (bmiValue > 18.5 && bmiValue < 25) {
-          this.setState({bmiColor:'orange'})
-        } else if (bmiValue > 25 && bmiValue < 30) {
-          this.setState({bmiColor:'orange'})
-        } else if (bmiValue > 30 && bmiValue < 35) {
-          this.setState({bmiColor:'orange'})
-        } else if (bmiValue > 35 && bmiValue < 40) {
-          this.setState({bmiColor:'orange'})
-        } else {
-          this.setState({bmiColor:'orange'})
-        }
+    db.listProduct()
+      .then(data => {
+        bmiData = data;
+        this.setState(
+          {
+            bmiData,
+            isLoading: false,
+          },
+          () => {
+            const bmiValue = parseInt(this.state.CurrentBmi);
+            if (bmiValue < 15) {
+              this.setState({bmiColor: 'orange'});
+            } else if (bmiValue >= 15 && bmiValue < 16) {
+              this.setState({bmiColor: 'orange'});
+            } else if (bmiValue > 16 && bmiValue < 18.5) {
+              this.setState({bmiColor: 'orange'});
+            } else if (bmiValue > 18.5 && bmiValue < 25) {
+              this.setState({bmiColor: 'orange'});
+            } else if (bmiValue > 25 && bmiValue < 30) {
+              this.setState({bmiColor: 'orange'});
+            } else if (bmiValue > 30 && bmiValue < 35) {
+              this.setState({bmiColor: 'orange'});
+            } else if (bmiValue > 35 && bmiValue < 40) {
+              this.setState({bmiColor: 'orange'});
+            } else {
+              this.setState({bmiColor: 'orange'});
+            }
+          },
+        );
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState = {
+          isLoading: false,
+        };
       });
-    }).catch((err) => {
-      console.log(err);
-      this.setState = {
-        isLoading: false
-      }
-    })
-    
   }
 
   renderBmiList = (item, index) => {
     return (
       <View style={styles.bmiList}>
         <View>
-          <Text style={{fontSize: 20, color: 'white'}}>{moment(item.CreatedDate).format("dddd")} </Text>
-    <Text style={{fontSize: 15}}>{moment(item.CreatedDate).format("MMMM DD")}</Text>
+          <Text style={{fontSize: 20, color: 'white'}}>
+            {moment(item.CreatedDate).format('dddd')}{' '}
+          </Text>
+          <Text style={{fontSize: 15}}>
+            {moment(item.CreatedDate).format('MMMM DD')}
+          </Text>
         </View>
         <View>
           <Text style={{fontSize: 20, color: 'white'}}>{item.Weight}</Text>
@@ -135,7 +143,9 @@ class DetailsScreen extends React.Component {
             size={30}
             style={{marginEnd: 10}}
           /> */}
-          <Text style={{fontSize: 20, color: 'white'}}>{item.Bmi.toFixed(2)}</Text>
+          <Text style={{fontSize: 20, color: 'white'}}>
+            {item.Bmi.toFixed(2)}
+          </Text>
         </View>
       </View>
     );
@@ -151,23 +161,21 @@ class DetailsScreen extends React.Component {
       </>
     );
   };
-  openHomeScreen = () =>{
-    console.log("opening home screen")
+  openHomeScreen = () => {
+    console.log('opening home screen');
     this.props.navigation.navigate('Home');
-  }
+  };
 
   render() {
-    const { bmiData,bmiColor, bmiValue, CurrentWeight, CurrentBmi} = this.state;
-    console.log("bmiData", typeof bmiData);
-    console.log("currentbmit state", this.state.CurrentBmi)
+    const {bmiData, bmiColor, bmiValue, CurrentWeight, CurrentBmi} = this.state;
+    console.log('bmiData', typeof bmiData);
+    console.log('currentbmit state', this.state.CurrentBmi);
     return (
       <View style={{flex: 1, backgroundColor: '#FFC501'}}>
         <Animatable.View
           animation="slideInLeft"
           style={{flex: 1}}
           useNativeDriver={true}>
-
-            
           <View
             style={{
               display: 'flex',
@@ -217,6 +225,9 @@ class DetailsScreen extends React.Component {
                     progressColor={bmiColor}
                   />
                 </View>
+                <View style={styles.reportText}>
+                  <Text>Over Weight</Text>
+                </View>
               </View>
             </View>
             <View>
@@ -248,7 +259,9 @@ class DetailsScreen extends React.Component {
                 flexGrow: Platform.OS === 'ios' ? 0.08 : 2,
               }}
               renderItem={({item, index}) => this.renderBmiList(item, index)}
-              ItemSeparatorComponent={() => <View style={Liststyles.separator} />}
+              ItemSeparatorComponent={() => (
+                <View style={Liststyles.separator} />
+              )}
               ListEmptyComponent={this.renderEmpty}
               // ListFooterComponent={this.renderFooter.bind(this)}
               //Adding Load More button as footer component
@@ -260,8 +273,6 @@ class DetailsScreen extends React.Component {
               // }
             />
           </View>
-
-          
         </Animatable.View>
       </View>
     );
@@ -332,6 +343,15 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 4,
     marginStart: 5,
+  },
+
+  reportText: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    marginTop: 20,
+    fontSize:10,
+    fontWeight:"200"
   },
 });
 
