@@ -77,7 +77,7 @@ class HomeScreen extends React.Component {
     }
   }
 
-  saveProduct(reportId,gender,bmi,age,weight, creatdeddate) {
+  saveReport(reportId,gender,bmi,age,weight, creatdeddate) {
     let data = {
       ReportId: reportId,
       Gender: gender,
@@ -86,7 +86,7 @@ class HomeScreen extends React.Component {
       Weight: weight,
       CreatedDate: creatdeddate
     }
-    db.addProduct(data).then((result) => {
+    db.addReport(data).then((result) => {
       console.log("response after adding",result);
       this.setState({
         spinner: false,
@@ -103,7 +103,7 @@ class HomeScreen extends React.Component {
 
   getProducts() {
     let products = [];
-    db.listProduct().then((data) => {
+    db.listReport().then((data) => {
       products = data;
       this.setState({
         products,
@@ -148,21 +148,13 @@ class HomeScreen extends React.Component {
   toggleFt = () => {
     const {ftColor,feetCentimeterValue} = this.state;
     if (ftColor === 'black') {
-      // setftColor('white');
-      // setcmColor('black');
       this.setState({ftColor:"white",cmColor:"black"})
-      // convert value from cm to feet
       const feet = appHelpers.centimetertoFeet(feetCentimeterValue);
       console.log('feet right now', feet);
-      // setFeetCentimeterValue(feet.toString());
       this.setState({feetCentimeterValue:feet.toString()})
     } else {
-      // setftColor('black');
-      // setcmColor('white');
       this.setState({ftColor:"white",cmColor:"whitw"})
-      // convert value from feet back to centimeter
       const centimeter = appHelpers.feettoCentimeter(feetCentimeterValue);
-      // setFeetCentimeterValue(centimeter.toString());
       this.setState({feetCentimeterValue:centimeter.toString()})
     }
   };
@@ -170,22 +162,14 @@ class HomeScreen extends React.Component {
   toggleKg = () => {
     const {kgColor,kglbValue} = this.state
     if (kgColor === 'white') {
-      // setkgColor('black');
-      // setlbColor('white');
       this.setState({kgColor:"black",lbColor:"white"})
-      // convert value from kilogram to pounds (lb)
       const kg = appHelpers.kilogramstoPounds(kglbValue);
-      // setkglbValue(kg.toString());
       this.setState({kglbValue:kg.toString()})
       console.log('center to kgg', kg);
     } else {
-      // setkgColor('white');
-      // setlbColor('black');
       this.setState({kgColor:'white',lbColor:'black'})
-      // convert value from pounds back to kilograms
       const pounds = appHelpers.poundstoKilograms(kglbValue);
       console.log('value here', pounds);
-      // setkglbValue(pounds.toString());
       this.setState({kglbValue:pounds.toString()})
     }
   };
@@ -193,32 +177,22 @@ class HomeScreen extends React.Component {
   toggleLb = () => {
     const {lbColor,kglbValue} = this.state;
     if (lbColor === 'black') {
-      // setlbColor('white');
-      // setkgColor('black');
       this.setState({lbColor:'white',kgColor:'black'})
-      // convert value from Pounds to Kilograms
       const kg = appHelpers.kilogramstoPounds(kglbValue);
       console.log('value here---', kg);
-      // setkglbValue(kg.toString());
       this.setState({kglbValue:kg.toString()})
     } else {
-      // setkgColor('white');
-      // setlbColor('black');
       this.setState({kgColor:'white',lbColor:'black'})
-      // convert value from pounds back to kilograms
       const pounds = appHelpers.poundstoKilograms(kglbValue);
       console.log('value haa', pounds);
-      // setkglbValue(pounds.toString());
       this.setState({kglbValue:pounds.toString()})
     }
   };
 
   handleFeetCentimeterChange = text => {
-    // setFeetCentimeterValue(text);
     this.setState({feetCentimeterValue:text})
   };
   handleKilogramPoundsChange = text => {
-    // setkglbValue(text);
     this.setState({kglbValue:text})
   };
 
@@ -233,13 +207,9 @@ class HomeScreen extends React.Component {
     }
     // updating the user's weight
     await AsyncStorage.setItem('@CurrentWeight', kglbValue.toString());
-    // const gottenData = await AsyncStorage.getItem('bmiData');
-    // bmi formula = kg / height^2
     if (cmColor === 'white' && kgColor === 'white') {
       const heightMeters = appHelpers.centimeterToMeter(feetCentimeterValue);
-      console.log('heightMeters:1', heightMeters, kglbValue);
       const bmi = kglbValue / Math.pow(heightMeters, 2);
-      console.log('Your bmi 1 :', bmi.toPrecision(4));
       // get the bmi data
       const bmiObj = {
         CreatedDate: moment().format(),
@@ -248,14 +218,13 @@ class HomeScreen extends React.Component {
         Age: ageValue,
       };
       await AsyncStorage.setItem('@CurrentBmi', bmiObj.Bmi.toString());
-      this.saveProduct(uuidv4(),gender,bmi,ageValue, bmiObj.Weight, bmiObj.CreatedDate);
+      this.saveReport(uuidv4(),gender,bmi,ageValue, bmiObj.Weight, bmiObj.CreatedDate);
       this.props.navigation.navigate('Details', {bmiObj});
       return;
     }
     if (cmColor === 'black' && kgColor === 'white') {
       const heightMeters = appHelpers.feetToMeter(feetCentimeterValue);
       const bmi = kglbValue / Math.pow(heightMeters, 2);
-      console.log('Your bmi 2 :', bmi);
       const bmiObj = {
         CreatedDate: moment().format(),
         Weight: kglbValue,
@@ -263,7 +232,7 @@ class HomeScreen extends React.Component {
         Age: ageValue,
       };
       await AsyncStorage.setItem('@CurrentBmi', bmiObj.Bmi.toString());
-      this.saveProduct(uuidv4(),gender,bmi,ageValue, bmiObj.Weight, bmiObj.CreatedDate);
+      this.saveReport(uuidv4(),gender,bmi,ageValue, bmiObj.Weight, bmiObj.CreatedDate);
       this.props.navigation.navigate('Details', {bmiObj});
       return;
     }
@@ -271,7 +240,6 @@ class HomeScreen extends React.Component {
       const poundstoKilograms = appHelpers.poundstoKilograms(kglbValue);
       const heightMeters = appHelpers.feetToMeter(feetCentimeterValue);
       const bmi = poundstoKilograms / Math.pow(heightMeters, 2);
-      console.log('Your bmi 3 :', bmi);
       const bmiObj = {
         CreatedDate: moment().format(),
         Weight: kglbValue,
@@ -279,7 +247,7 @@ class HomeScreen extends React.Component {
         Age: ageValue,
       };
       await AsyncStorage.setItem('@CurrentBmi', bmiObj.Bmi.toString());
-      this.saveProduct(uuidv4(),gender,bmi,ageValue, bmiObj.Weight, bmiObj.CreatedDate);
+      this.saveReport(uuidv4(),gender,bmi,ageValue, bmiObj.Weight, bmiObj.CreatedDate);
       this.props.navigation.navigate('Details', {bmiObj});
       return;
     }
@@ -287,7 +255,6 @@ class HomeScreen extends React.Component {
       const poundstoKilograms = appHelpers.poundstoKilograms(kglbValue);
       const heightMeters = appHelpers.centimeterToMeter(feetCentimeterValue);
       const bmi = poundstoKilograms / Math.pow(heightMeters, 2);
-      console.log('Your bmi 4 :', bmi);
       const bmiObj = {
         CreatedDate: moment().format(),
         Weight: kglbValue,
@@ -295,31 +262,27 @@ class HomeScreen extends React.Component {
         Age: ageValue,
       };
       await AsyncStorage.setItem('@CurrentBmi', bmiObj.Bmi.toString());
-      this.saveProduct(uuidv4(),gender,bmi,ageValue, bmiObj.Weight, bmiObj.CreatedDate);
+      this.saveReport(uuidv4(),gender,bmi,ageValue, bmiObj.Weight, bmiObj.CreatedDate);
       this.props.navigation.navigate('Details', {bmiObj});
       return;
     }
   };
 
   handleAgeChange = text => {
-    // setAgeValue(text);
     this.setState({ageValue:text})
   };
 
   addHandler = () => {
     const {ageValue} = this.state;
     const newValue = parseInt(ageValue) + 1;
-    // setAgeValue(newValue.toString());
     this.setState({ageValue:newValue.toString()})
   };
   minusHandler = () => {
     const {ageValue} = this.state;
     const newValue = parseInt(ageValue) - 1;
     if (newValue < 0) {
-      // setAgeValue('0');
       this.setState({ageValue:'0'})
     } else {
-      // setAgeValue(newValue.toString());
       this.setState({ageValue:newValue.toString()})
     }
   };
@@ -327,12 +290,8 @@ class HomeScreen extends React.Component {
   femaleCardHandler = () => {
     const {femaleCardColor} = this.state;
     if (femaleCardColor === 'white') {
-      // setFemaleCardColor('#bdbdbd');
-      // setMaleCardColor('white');
       this.setState({femaleCardColor:"#bdbdbd",maleCardColor:"white",gender:"female"})
     } else {
-      // setFemaleCardColor('white');
-      // setMaleCardColor('#bdbdbd');
       this.setState({femaleCardColor:"white",maleCardColor:"#bdbdbd",gender:"male"})
     }
   };
@@ -340,12 +299,8 @@ class HomeScreen extends React.Component {
     const {maleCardColor} = this.state;
     if (maleCardColor === 'white') {
       this.setState({maleCardColor:"#bdbdbd",femaleCardColor:"white", gender:"male"})
-      // setMaleCardColor('#bdbdbd');
-      // setFemaleCardColor('white');
     } else {
       this.setState({maleCardColor:"white",femaleCardColor:"#bdbdbd",gender:"female"})
-      // setMaleCardColor('white');
-      // setFemaleCardColor('#bdbdbd');
     }
   };
 
@@ -494,9 +449,6 @@ class HomeScreen extends React.Component {
                   lb
                 </Text>
               </View>
-              {/* <View style={{display:"flex", justifyContent:"center", flexDirection:"row", marginLeft:30}}>
-        <MaterialCommunityIcons onPress={minusHandler} name="minus-circle" size={30} style = {{alignSelf:"center", color:"white", marginRight:-10}} />
-        */}
               <TextInput
                 placeholder="0"
                 underlineColorAndroid="transparent"
@@ -505,8 +457,6 @@ class HomeScreen extends React.Component {
                 value={kglbValue}
                 onChangeText={this.handleKilogramPoundsChange}
               />
-              {/* <MaterialIcons onPress={addHandler} name="add-circle" size={30} style = {{alignSelf:"center", color:"white",marginLeft:-10}} />
-      </View> */}
             </View>
 
             <View style={styles.inputs}>

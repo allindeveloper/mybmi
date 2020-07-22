@@ -29,12 +29,6 @@ const progressChartConfig = {
   color: (opacity = 1) => `rgba(${255}, ${255}, ${255}, ${opacity})`,
 };
 
-const graphStyle = {
-  marginVertical: 8,
-  margin: 5,
-  ...progressChartConfig.style,
-};
-
 class DetailsScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -49,7 +43,6 @@ class DetailsScreen extends React.Component {
   }
 
   componentDidMount() {
-    console.log('hehhhhh');
     AsyncStorage.getItem('@CurrentWeight', (error, result) => {
       this.setState({CurrentWeight: result});
     });
@@ -58,7 +51,7 @@ class DetailsScreen extends React.Component {
     });
 
     let bmiData = [];
-    db.listProduct()
+    db.listReport()
       .then(data => {
         bmiData = data;
         this.setState(
@@ -68,24 +61,29 @@ class DetailsScreen extends React.Component {
           },
           () => {
             const bmiValue = parseInt(this.state.CurrentBmi);
-            if (bmiValue < 15) {
-              this.setState({bmiColor: 'orange'});
-            } else if (bmiValue >= 15 && bmiValue < 16) {
-              this.setState({bmiColor: 'orange'});
-            } else if (bmiValue > 16 && bmiValue < 18.5) {
-              this.setState({bmiColor: 'orange'});
-            } else if (bmiValue > 18.5 && bmiValue < 25) {
-              this.setState({bmiColor: 'orange'});
-            } else if (bmiValue > 25 && bmiValue < 30) {
-              this.setState({bmiColor: 'orange'});
-            } else if (bmiValue > 30 && bmiValue < 35) {
-              this.setState({bmiColor: 'orange'});
-            } else if (bmiValue > 35 && bmiValue < 40) {
-              this.setState({bmiColor: 'orange'});
-            } else {
-              this.setState({bmiColor: 'orange'});
-            }
             appHelpers.updateReportValue(bmiValue,this);
+            if(bmiValue>=30){
+              // obesity
+              this.setState({bmiColor: 'red'});
+              return;
+            }
+            if(bmiValue >=0 && bmiValue <=18.5){
+              // under weight
+              this.setState({bmiColor: 'red'});
+              return;
+            }
+            if(bmiValue > 18.5 && bmiValue <=24.9){
+              // normal weight
+              this.setState({bmiColor: 'green'});
+              return;
+            }
+            if(bmiValue > 25 && bmiValue <=29.9){
+              // over weight
+              this.setState({bmiColor: 'red'});
+              return;
+            }
+      
+            
           },
         );
       })
@@ -170,6 +168,7 @@ class DetailsScreen extends React.Component {
               name="add-circle"
               size={30}
               style={{alignSelf: 'center', marginEnd: 20}}
+              onPress={this.openHomeScreen}
             />
           </View>
 
@@ -183,17 +182,9 @@ class DetailsScreen extends React.Component {
               <Text style={{margin: 10}}>Bmi</Text>
               <View style={styles.progressStyle}>
                 <View>
-                  <Text
-                    style={{
-                      display: 'flex',
-                      fontSize: 20,
-                      marginStart: 70,
-                      justifyContent:'center',
-                      textAlign: 'left',
-                      marginTop: -30,
-                    }}>
-                    {Math.fround(CurrentBmi)}
-                  </Text>
+                   <View style={styles.reportBmi}>
+                  <Text>{Math.fround(CurrentBmi)}</Text>
+                </View>
 
                   <ProgressCircle
                     style={{height: 140, paddingTop: 10, paddingBottom: 10}}
@@ -239,14 +230,6 @@ class DetailsScreen extends React.Component {
                 <View style={Liststyles.separator} />
               )}
               ListEmptyComponent={this.renderEmpty}
-              // ListFooterComponent={this.renderFooter.bind(this)}
-              //Adding Load More button as footer component
-              // refreshControl={
-              //   <RefreshControl
-              //     refreshing={this.state.loading}
-              //     onRefresh={this.onRefresh.bind(this)}
-              //   />
-              // }
             />
           </View>
         </Animatable.View>
@@ -326,6 +309,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     marginTop: 20,
+    fontSize:10,
+    fontWeight:"200"
+  },
+  reportBmi: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'row',
     fontSize:10,
     fontWeight:"200"
   },

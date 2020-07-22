@@ -77,9 +77,10 @@ export default class Database {
     }
   }
 
-  listProduct() {
+  listReport() {
     return new Promise(resolve => {
-      const products = [];
+      const reportList = [];
+      
       this.initDB()
         .then(db => {
           db.transaction(tx => {
@@ -95,7 +96,7 @@ export default class Database {
                   `Report ID: ${row.ReportId}, Report Bmi: ${row.Bmi}`,
                 );
                 const {ReportId, Gender, Bmi, Age, Weight, CreatedDate} = row;
-                products.push({
+                reportList.push({
                   ReportId,
                   Gender,
                   Bmi,
@@ -104,8 +105,8 @@ export default class Database {
                   CreatedDate,
                 });
               }
-              console.log(products);
-              resolve(products);
+              console.log(reportList);
+              resolve(reportList);
             });
           })
             .then(result => {
@@ -150,18 +151,18 @@ export default class Database {
     });
   }
 
-  addProduct(prod) {
+  addReport(report) {
     return new Promise(resolve => {
       this.initDB()
         .then(db => {
           db.transaction(tx => {
             tx.executeSql('INSERT INTO Reports VALUES (?, ?, ?, ?, ?, ?)', [
-              prod.ReportId,
-              prod.Gender,
-              prod.Bmi,
-              prod.Age,
-              prod.Weight,
-              prod.CreatedDate
+              report.ReportId,
+              report.Gender,
+              report.Bmi,
+              report.Age,
+              report.Weight,
+              report.CreatedDate
             ]).then(([tx, results]) => {
               resolve(results);
             });
@@ -179,43 +180,14 @@ export default class Database {
     });
   }
 
-  updateProduct(id, prod) {
-    return new Promise(resolve => {
-      this.initDB()
-        .then(db => {
-          db.transaction(tx => {
-            tx.executeSql(
-              'UPDATE Product SET prodName = ?, prodDesc = ?, prodImage = ?, prodPrice = ? WHERE prodId = ?',
-              [
-                prod.prodName,
-                prod.prodDesc,
-                prod.prodImage,
-                prod.prodPrice,
-                id,
-              ],
-            ).then(([tx, results]) => {
-              resolve(results);
-            });
-          })
-            .then(result => {
-              this.closeDatabase(db);
-            })
-            .catch(err => {
-              console.log(err);
-            });
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    });
-  }
 
-  deleteProduct(id) {
+
+  deleteReport(id) {
     return new Promise(resolve => {
       this.initDB()
         .then(db => {
           db.transaction(tx => {
-            tx.executeSql('DELETE FROM Product WHERE prodId = ?', [id]).then(
+            tx.executeSql('DELETE FROM Reports WHERE reportId = ?', [id]).then(
               ([tx, results]) => {
                 console.log(results);
                 resolve(results);

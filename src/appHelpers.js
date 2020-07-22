@@ -44,36 +44,46 @@ validateBmiCalculation : (context) =>{
   if(context.state.gender === ""){
     resObj.isValid = false,
     resObj.message  = "Gender is Required";
+    context.setState({spinner:false});
   }
   else if(context.state.feetCentimeterValue === null){
     resObj.isValid = false,
     resObj.message  = "Feet or Centimeter is Required";
+    context.setState({spinner:false});
   }
   else if(context.state.kglbValue === null){
     resObj.isValid = false,
     resObj.message  = "Kilogram or Pounds is Required";
+    context.setState({spinner:false});
   }
   else if(context.state.ageValue === null){
     resObj.isValid = false,
     resObj.message  = "Age is Required";
+    context.setState({spinner:false});
   }
+  
 
   return resObj;
 },
 updateReportValue : (bmi,context) =>{
   
-  if(bmi >0 && bmi <= 18.5){
-    context.setState({reportValue:"Under Weight"})
-  }else if(bmi >= 18.5 || bmi <= 24.9){
-    context.setState({reportValue:"Normal Weight"})
-  }else if(bmi >=25 || bmi <=29.9){
-    context.setState({reportValue:"Over Weight"})
+  const newBmi = bmi;
+  console.log("bmmiiii",newBmi)
+  if(newBmi>=30){
+    context.setState({reportValue:"Obesity"});
+    return;
   }
-  else if(bmi === 30 || bmi >30){
-    context.setState({reportValue:"Obesity"})
+  if(newBmi >=0 && newBmi <=18.5){
+    context.setState({reportValue:"Under Weight"});
+    return;
   }
-  else {
-    context.setState({reportValue:"-"})
+  if(newBmi > 18.5 && newBmi <=24.9){
+    context.setState({reportValue:"Normal Weight"});
+    return;
+  }
+  if(newBmi > 25 && newBmi <=29.9){
+    context.setState({reportValue:"Over Weight"});
+    return;
   }
 }
 
