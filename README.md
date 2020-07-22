@@ -1,12 +1,12 @@
 # myBmi Mobile Application
 
+## Iphone
 
-<div>
   <img src="https://raw.githubusercontent.com/allindeveloper/mybmi/master/Screenshot%202020-07-22%20at%2010.56.36.png" width="30%" >
- <br/>
+ 
+## Android
   <img src="https://raw.githubusercontent.com/allindeveloper/mybmi/master/Screenshot%202020-07-22%20at%2011.03.14.png" width="30%" >
 
-</div>
 
 
 ### Main Features of the Application, you'll find:
@@ -49,7 +49,7 @@ Interested in contributing? i :heart: pull requests!
 
 ## Getting Help
 
-We love to hear from you so if you have questions, comments or find a bug in the project, let us know! You can either:
+I'll love to hear from you so if you have questions, comments or find a bug in the project, let me know! You can either:
 
 - Open an issue on this repository
 - Tweet at me! We're [@allindeveloper](https://twitter.com/allindeveloper) on Twitter
