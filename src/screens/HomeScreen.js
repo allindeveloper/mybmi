@@ -7,6 +7,7 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
+import Spinner from 'react-native-loading-spinner-overlay';
 import { v4 as uuidv4 } from 'uuid';
 import {Surface, Button} from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -51,6 +52,7 @@ class HomeScreen extends React.Component {
       bmiData:null,
       gender:"",
       bmiData: [],
+      spinner:false
       };
     
   }
@@ -87,13 +89,13 @@ class HomeScreen extends React.Component {
     db.addProduct(data).then((result) => {
       console.log("response after adding",result);
       this.setState({
-        isLoading: false,
+        spinner: false,
       });
      
     }).catch((err) => {
       console.log("eror in saving",err);
       this.setState({
-        isLoading: false,
+        spinner: false,
       });
     })
   }
@@ -114,16 +116,7 @@ class HomeScreen extends React.Component {
       }
     })
   }
-  // const [maleCardColor, setMaleCardColor] = React.useState("white");
-  // const [femaleCardColor, setFemaleCardColor] = React.useState("white");
-  // const [cmColor, setcmColor] = React.useState("white");
-  // const [ftColor, setftColor] = React.useState("black");
-  // const [kgColor, setkgColor] = React.useState("white");
-  // const [lbColor, setlbColor] = React.useState("black");
-  // const [feetCentimeterValue, setFeetCentimeterValue] = React.useState(null);
-  // const [kglbValue, setkglbValue] = React.useState(null);
-  // const [ageValue, setAgeValue] = React.useState(null);
-
+ 
   saveBookmarks = async (bookmarksArray) => {
     try {
       const bookmarksString = JSON.stringify(bookmarksArray);
@@ -230,6 +223,7 @@ class HomeScreen extends React.Component {
   };
 
   calculateBmi = async () => {
+    this.setState({spinner:true})
     const {cmColor,kglbValue,kgColor,lbColor,feetCentimeterValue,ftColor,ageValue,bmiData, gender} = this.state;
 
     const bmiValidator = appHelpers.validateBmiCalculation(this);
@@ -368,8 +362,6 @@ class HomeScreen extends React.Component {
     const {cmColor,ftColor, feetCentimeterValue,femaleCardColor,maleCardColor,kgColor,kglbValue,lbColor,ageValue} = this.state
     const {showSnack, snackText} = this.state;
 
-    console.log("all products", this.state.products)
-    console.log("---products--- after")
     return (
       <View style={{flex: 1, backgroundColor: '#FFC501'}}>
         <Animatable.View
@@ -383,6 +375,11 @@ class HomeScreen extends React.Component {
               flexDirection: 'row',
               marginTop: Platform.OS === 'ios' ? 90 : 10,
             }}>
+              <Spinner
+          visible={this.state.spinner}
+          textContent={'Computing...'}
+          textStyle={spinnerstyles.spinnerTextStyle}
+              />
             <Text style={styles.mainText}>BMI Calculator</Text>
             <MaterialIcons
               onPress={this.refresh}
@@ -671,6 +668,12 @@ const styles = StyleSheet.create({
   contentTitle: {
     fontSize: 20,
     marginBottom: 12,
+  },
+});
+
+const spinnerstyles = StyleSheet.create({
+  spinnerTextStyle: {
+    color: '#FFF'
   },
 });
 
