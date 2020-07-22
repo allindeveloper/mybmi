@@ -19,7 +19,7 @@ export const appHelpers = {
 
   poundstoKilograms: value => {
     let kg = value / 2.205;
-    return kg;
+    return Math.ceil(kg);
   }
   ,
   centimeterToMeter : value =>{

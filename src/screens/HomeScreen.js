@@ -418,6 +418,7 @@ class HomeScreen extends React.Component {
               <TextInput
                 placeholder="0"
                 underlineColorAndroid="transparent"
+                keyboardType="numeric"
                 style={styles.cmInputStyle}
                 onChangeText={this.handleFeetCentimeterChange}
                 value={feetCentimeterValue}
