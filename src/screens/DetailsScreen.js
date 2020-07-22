@@ -4,12 +4,7 @@ import {
   Text,
   StyleSheet,
   Platform,
-  TextInput,
-  ScrollView,
-  Dimensions,
-  RefreshControl,
   FlatList,
-  ActivityIndicator,
 } from 'react-native';
 import {Surface, Button, Badge} from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -26,24 +21,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import AppDatabase from '../../AppDatabase';
 
 const db = new AppDatabase();
-const progressData = [21.5];
 
-const chartConfig = {
-  backgroundColor: '#e26a00',
-  backgroundGradientFrom: '#000000',
-  backgroundGradientTo: '#ffa726',
-  decimalPlaces: 2, // optional, defaults to 2dp
-  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-  labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-  style: {
-    borderRadius: 16,
-  },
-  propsForDots: {
-    r: '6',
-    strokeWidth: '2',
-    stroke: '#ffa726',
-  },
-};
 const progressChartConfig = {
   backgroundColor: '#000000',
   backgroundGradientFrom: '#000000',
@@ -140,12 +118,7 @@ class DetailsScreen extends React.Component {
             justifyContent: 'center',
             flexDirection: 'row',
           }}>
-          {/* <FeatherIcons
-            name="arrow-up-right"
-            size={30}
-            style={{marginEnd: 10}}
-          /> */}
-          <Text style={{fontSize: 20, color: 'white'}}>
+           <Text style={{fontSize: 20, color: 'white'}}>
             {item.Bmi.toFixed(2)}
           </Text>
         </View>
@@ -214,11 +187,12 @@ class DetailsScreen extends React.Component {
                     style={{
                       display: 'flex',
                       fontSize: 20,
-                      marginStart: 10,
+                      marginStart: 70,
+                      justifyContent:'center',
                       textAlign: 'left',
-                      marginTop: -50,
+                      marginTop: -30,
                     }}>
-                    {CurrentBmi.toFixed(4)}
+                    {Math.fround(CurrentBmi)}
                   </Text>
 
                   <ProgressCircle

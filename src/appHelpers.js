@@ -62,7 +62,7 @@ validateBmiCalculation : (context) =>{
 },
 updateReportValue : (bmi,context) =>{
   
-  if(bmi < 18.5){
+  if(bmi >0 && bmi <= 18.5){
     context.setState({reportValue:"Under Weight"})
   }else if(bmi >= 18.5 || bmi <= 24.9){
     context.setState({reportValue:"Normal Weight"})
@@ -71,6 +71,9 @@ updateReportValue : (bmi,context) =>{
   }
   else if(bmi === 30 || bmi >30){
     context.setState({reportValue:"Obesity"})
+  }
+  else {
+    context.setState({reportValue:"-"})
   }
 }
 
